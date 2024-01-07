@@ -27,4 +27,4 @@ if __name__ == '__main__':
     parser.add_argument('--yaml_path', type=str, help='Path to the YOLOv8 data.yaml file', required=True)
     args = parser.parse_args()
 
-    main(args.image_path, args.model_path, args.yaml_path)
+    main(args.data_path, args.model_path, args.yaml_path)
