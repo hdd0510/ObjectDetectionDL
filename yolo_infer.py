@@ -2,7 +2,7 @@ import torch
 import yaml
 import cv2
 import argparse
-from models import *  # This assumes you have a models.py file with your YOLOv8 model definition
+# from models import *  # This assumes you have a models.py file with your YOLOv8 model definition
 from ultralytics import YOLO
 
 def load_yaml_config(yaml_path):
