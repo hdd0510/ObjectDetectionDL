@@ -10,6 +10,7 @@ FasterRCNN checkpoint:
 [Augment, no pretrain](https://drive.google.com/file/d/1J9d5tPYCE50iW6fE95erc7x9fU1Ol0qu/view?usp=sharing)
 
 YOLOv8 checkpoint:
+
 [Augment, pretrain](https://drive.google.com/file/d/1X5MYy1RijgeHeySHcm8iS_UizuwE8da8/view?usp=sharing)
 
 [No augment, pretrain](https://drive.google.com/file/d/1o_3IeMSbbSIzbSXsmYA3sZti6wl-18Iq/view?usp=sharing)
@@ -18,6 +19,6 @@ YOLOv8 checkpoint:
 
 [No augment, no pretrain](https://drive.google.com/file/d/1sc9dt12D5lL-8sSTUYgBLNvnT_iDHNNH/view?usp=sharing)
 
-Link dataset: https://www.kaggle.com/datasets/truongthanh0812/licenseplate
+[Link dataset](https://www.kaggle.com/datasets/truongthanh0812/licenseplate)
 
 The infer of YOLOv8 is complete, but the one of FasterRCNN is not done yet, we will update later
