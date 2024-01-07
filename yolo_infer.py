@@ -156,8 +156,8 @@ def main(test_path, model_path, yaml_path):
     images = cv2.imread(random_image_file)
     images = cv2.cvtColor(images, cv2.COLOR_BGR2RGB)
     results = model(images)
-    for image, result in images, results:
-        visual_prediction(image, result)
+    for result in results:
+        visual_prediction(images, result)
 
     gt_dir = '/kaggle/input/licenseplate/test/labels'
     image_dir = '/kaggle/input/licenseplate/test/images'
