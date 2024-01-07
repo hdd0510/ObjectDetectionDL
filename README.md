@@ -11,4 +11,6 @@ no augment, pretrain: https://drive.google.com/file/d/1o_3IeMSbbSIzbSXsmYA3sZti6
 augment, no pretrain: https://drive.google.com/file/d/11nxwuxNdLLwyysjc_0KT_3GmD4IDCQoW/view?usp=sharing
 no augment, no pretrain: https://drive.google.com/file/d/1sc9dt12D5lL-8sSTUYgBLNvnT_iDHNNH/view?usp=sharing
 
+link dataset: https://www.kaggle.com/datasets/truongthanh0812/licenseplate
+
 The infer of YOLOv8 is complete, but the one of FasterRCNN is not done yet, we will update later
