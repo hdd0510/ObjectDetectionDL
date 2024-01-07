@@ -309,7 +309,7 @@ print(updated_data)
 # In[6]:
 
 
-get_ipython().system('pip install ultralytics')
+# get_ipython().system('pip install ultralytics')
 
 
 # In[7]:
