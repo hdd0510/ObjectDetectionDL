@@ -3,7 +3,8 @@ import yaml
 import cv2
 import argparse
 import os 
-# from models import *  # This assumes you have a models.py file with your YOLOv8 model definition
+from yolov8 import *  # This assumes you have a models file with your YOLOv8 model definition
+import random
 from ultralytics import YOLO
 
 def load_yaml_config(yaml_path):
@@ -23,6 +24,20 @@ def main(test_path, model_path, yaml_path):
         yaml.dump(data, f, default_flow_style=False)
     model = load_model(model_path)
     model.val()
+
+    image_dir = f'{test_path}/images'
+    image_files = [os.path.join(image_dir, f) for f in os.listdir(image_dir)]
+
+    # Choose a random image file
+    random_image_file = random.choice(image_files)
+
+    # Load the image using OpenCV
+    image = cv2.imread(random_image_file)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    results = model(image)
+    for result in results:
+        visual_prediction(result)
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, help='Path to the data file', required=True)
