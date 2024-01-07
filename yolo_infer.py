@@ -2,6 +2,7 @@ import torch
 import yaml
 import cv2
 import argparse
+import os 
 # from models import *  # This assumes you have a models.py file with your YOLOv8 model definition
 from ultralytics import YOLO
 
@@ -17,10 +18,10 @@ def load_model(model_path):
 
 def main(test_path, model_path, yaml_path):
     data = load_yaml_config(yaml_path)
-    model = load_model(model_path)
     data['val'] = test_path
     with open(os.path.join('/kaggle/working/', 'data.yaml'), 'w') as f:
         yaml.dump(data, f, default_flow_style=False)
+    model = load_model(model_path)
     model.val()
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
