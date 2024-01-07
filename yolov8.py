@@ -515,7 +515,7 @@ print(len(tide_predictions))
 # In[17]:
 
 
-get_ipython().system('pip install tidecv')
+# get_ipython().system('pip install tidecv')
 
 
 # In[18]:
@@ -530,65 +530,72 @@ image_dir = '/kaggle/input/licenseplate/test/images'
 output_json_path = 'ground_truths.json'
 
 # Initialize the JSON structure
-coco_format = {
-    'images': [],
-    'annotations': [],
-    'categories': []
-}
-
-# Let's assume you already have a list of category names and their corresponding IDs
-category_id_mapping = {'license plate': 1, 'lights': 0}  # etc.
-
-# Add categories to COCO JSON
-for category_name, category_id in category_id_mapping.items():
-    coco_format['categories'].append({
-        'id': category_id,
-        'name': category_name,
-        'supercategory': category_name
-    })
-
-# Populate images and annotations
-annotation_id = 1
-for i, filename in enumerate(os.listdir(image_dir)):
-    if filename.lower().endswith(('.jpg', '.jpeg', '.png')):
-        image_id = i
-        image_path = os.path.join(image_dir, filename)
-        
-        # Add image information
-        coco_format['images'].append({
-            'id': image_id,
-            'file_name': filename,
-            'width': 640,  # Replace with actual image width
-            'height': 640  # Replace with actual image height
+def create_coco_json(image_dir, gt_dir, category_id_mapping, img_width, img_height):
+    coco_format = {
+        'images': [],
+        'annotations': [],
+        'categories': []
+    }
+    
+    # Add categories to COCO JSON
+    for category_name, category_id in category_id_mapping.items():
+        coco_format['categories'].append({
+            'id': category_id,
+            'name': category_name,
+            'supercategory': category_name
         })
 
-        # Corresponding ground truth file
-        gt_filepath = os.path.join(gt_dir, filename.replace('jpg', 'txt').replace('txt', 'jpg', 1))
-        if os.path.exists(gt_filepath):
-            with open(gt_filepath, 'r') as f:
-                for line in f:
-                    class_id, x_center, y_center, bbox_width, bbox_height = [
-                        float(x) for x in line.strip().split()
-                    ]
+    # Populate images and annotations
+    annotation_id = 1
+    for i, filename in enumerate(os.listdir(image_dir)):
+        if filename.lower().endswith(('.jpg', '.jpeg', '.png')):
+            image_id = i
+            image_path = os.path.join(image_dir, filename)
+            
+            # Add image information
+            coco_format['images'].append({
+                'id': image_id,
+                'file_name': filename,
+                'width': img_width,
+                'height': img_height
+            })
 
-                    # Convert to COCO format
-                    x_min = (x_center - (bbox_width / 2)) * 640  # image width
-                    y_min = (y_center - (bbox_height / 2)) * 640  # image height
-                    width = bbox_width * 640  # image width
-                    height = bbox_height * 640  # image height
+            # Corresponding ground truth file
+            gt_filepath = os.path.join(gt_dir, filename.replace('.jpg', '.txt').replace('.jpeg', '.txt').replace('.png', '.txt'))
+            if os.path.exists(gt_filepath):
+                with open(gt_filepath, 'r') as f:
+                    for line in f:
+                        class_id, x_center, y_center, bbox_width, bbox_height = [
+                            float(x) for x in line.strip().split()
+                        ]
 
-                    # Add annotation information
-                    coco_format['annotations'].append({
-                        'id': annotation_id,
-                        'image_id': image_id,
-                        'category_id': int(class_id),
-                        'bbox': [x_min, y_min, width, height],
-                        'area': width * height,
-                        'iscrowd': 0,
-                        'segmentation': [[0 for i in range(640)] for i in range(640)]
-                    })
-                    annotation_id += 1
-                    
+                        # Convert to COCO format
+                        x_min = (x_center - (bbox_width / 2)) * img_width
+                        y_min = (y_center - (bbox_height / 2)) * img_height
+                        width = bbox_width * img_width
+                        height = bbox_height * img_height
+
+                        # Add annotation information
+                        coco_format['annotations'].append({
+                            'id': annotation_id,
+                            'image_id': image_id,
+                            'category_id': int(class_id),
+                            'bbox': [x_min, y_min, width, height],
+                            'area': width * height,
+                            'iscrowd': 0,
+                            # The segmentation is not provided here; it's typically an array of points
+                            'segmentation': []
+                        })
+                        annotation_id += 1
+    return coco_format
+
+category_id_mapping = {'license plate': 1, 'lights': 0}
+image_dir = 'path_to_your_images'
+gt_dir = 'path_to_your_ground_truth_files'
+img_width = 640
+img_height = 640
+
+coco_data = create_coco_json(image_dir, gt_dir, category_id_mapping, img_width, img_height)
 # Write the COCO format JSON to a file
 with open(output_json_path, 'w') as f:
     json.dump(coco_format, f, indent=2)
@@ -599,15 +606,6 @@ with open(output_json_path, 'w') as f:
 
 import json
 
-# Giả sử `ground_truths` là danh sách các dictionaries chứa thông tin ground truth
-# và `predictions` là danh sách các dictionaries chứa thông tin dự đoán.
-# Các dictionaries này phải có định dạng phù hợp với COCO.
-
-# Chuyển danh sách ground truths thành JSON
-# with open('ground_truths.json', 'w') as f:
-#     json.dump(tide_ground_truths, f)
-
-# Chuyển danh sách predictions thành JSON
 with open('predictions.json', 'w') as f:
     json.dump(tide_predictions, f)
 
@@ -622,7 +620,7 @@ print(len(coco_format['images']))
 # In[21]:
 
 
-get_ipython().system('pip install tidecv')
+# get_ipython().system('pip install tidecv')
 
 
 # In[22]:
