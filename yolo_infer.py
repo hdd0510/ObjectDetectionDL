@@ -124,8 +124,7 @@ def create_coco_json(image_dir, gt_dir, category_id_mapping, img_width, img_heig
                             'bbox': [x_min, y_min, width, height],
                             'area': width * height,
                             'iscrowd': 0,
-                            # The segmentation is not provided here; it's typically an array of points
-                            'segmentation': []
+                            'segmentation': [[0 for i in range(640)] for i in range(640)]
                         })
                         annotation_id += 1
     return coco_format
