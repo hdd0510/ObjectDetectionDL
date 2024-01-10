@@ -8,6 +8,8 @@ from torchvision.models.detection import FasterRCNN
 from torchvision.models.detection.rpn import AnchorGenerator
 from torch.utils.data.sampler import SequentialSampler
 import json
+from pycocotools.coco import COCO
+from pycocotools.cocoeval import COCOeval
 import argparse
 
 
