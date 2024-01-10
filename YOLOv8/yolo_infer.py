@@ -228,7 +228,7 @@ def main(test_path, model_path, yaml_path):
                 cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (220, 0, 0), 2)
                 
                 # Add label and score to the image
-                label_str = f'{class_labels[labels.item()]}: {score:.2f}'
+                label_str = f'{class_labels[label.item()]}: {score:.2f}'
                 cv2.putText(image, label_str, (x_min, y_min - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (220,0,0), 2)
             
             # Save image with predictions
