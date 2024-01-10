@@ -172,7 +172,7 @@ def main(model_path, data_path):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, help='Path to the data file', required=True)
-    parser.add_argument('--model_path', type=str, help='Path to the YOLOv8 model file', required=True)
+    parser.add_argument('--model_checkpoint', help='Path to the YOLOv8 model file', required=True)
     args = parser.parse_args()
 
-    main(args.model_path, args.data_path)
+    main(args.model_checkpoint, args.data_path)
