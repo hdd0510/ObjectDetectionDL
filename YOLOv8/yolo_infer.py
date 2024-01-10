@@ -229,7 +229,7 @@ def main(test_path, model_path, yaml_path):
                 
                 # Add label and score to the image
                 label_str = f'{class_labels[label.item()]}: {score:.2f}'
-                cv2.putText(image, label_str, (x_min, y_min - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (220,0,0), 2)
+                cv2.putText(image, label_str, (x_min, y_min - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,220), 2)
             
             # Save image with predictions
             basename = os.path.basename(image_path)
