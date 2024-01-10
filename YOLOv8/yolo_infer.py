@@ -5,6 +5,7 @@ import argparse
 import os 
 import json
 import random
+import shutil
 from tidecv import TIDE
 import tidecv.datasets as datasets
 from pycocotools.coco import COCO
@@ -158,41 +159,86 @@ def main(test_path, model_path, yaml_path):
     for result in results:
         visual_prediction(images, result)
 
-    gt_dir = '/kaggle/input/licenseplate/test/labels'
-    image_dir = '/kaggle/input/licenseplate/test/images'
-    output_json_path = 'ground_truths.json'
+    # gt_dir = '/kaggle/input/licenseplate/test/labels'
+    # image_dir = '/kaggle/input/licenseplate/test/images'
+    # output_json_path = 'ground_truths.json'
 
-    tide_predictions = get_yolo_predictions(model, image_dir)
+    # tide_predictions = get_yolo_predictions(model, image_dir)
 
-    # Initialize the JSON structure
-    category_id_mapping = {'license plate': 1, 'lights': 0}
-    img_width = 640
-    img_height = 640
+    # # Initialize the JSON structure
+    # category_id_mapping = {'license plate': 1, 'lights': 0}
+    # img_width = 640
+    # img_height = 640
 
-    coco_format = create_coco_json(image_dir, gt_dir, category_id_mapping, img_width, img_height)
-    # Write the COCO format JSON to a file
-    with open(output_json_path, 'w') as f:
-        json.dump(coco_format, f, indent=2)
-    with open('predictions.json', 'w') as f:
-        json.dump(tide_predictions, f)
+    # coco_format = create_coco_json(image_dir, gt_dir, category_id_mapping, img_width, img_height)
+    # # Write the COCO format JSON to a file
+    # with open(output_json_path, 'w') as f:
+    #     json.dump(coco_format, f, indent=2)
+    # with open('predictions.json', 'w') as f:
+    #     json.dump(tide_predictions, f)
     
 
-    pred = datasets.COCOResult('/kaggle/working/predictions.json')
-    gt = datasets.COCO('/kaggle/working/ground_truths.json')
+    # pred = datasets.COCOResult('/kaggle/working/predictions.json')
+    # gt = datasets.COCO('/kaggle/working/ground_truths.json')
     
-    coco_gt = COCO('/kaggle/working/ground_truths.json')  # path to the JSON with ground truth annotations
-    coco_dt = coco_gt.loadRes('/kaggle/working/predictions.json')  # path to the JSON with detection results
-    coco_eval = COCOeval(coco_gt, coco_dt, 'bbox')
+    # coco_gt = COCO('/kaggle/working/ground_truths.json')  # path to the JSON with ground truth annotations
+    # coco_dt = coco_gt.loadRes('/kaggle/working/predictions.json')  # path to the JSON with detection results
+    # coco_eval = COCOeval(coco_gt, coco_dt, 'bbox')
     
-    # Run evaluation
-    coco_eval.evaluate()
-    coco_eval.accumulate()
-    coco_eval.summarize()
+    # # Run evaluation
+    # coco_eval.evaluate()
+    # coco_eval.accumulate()
+    # coco_eval.summarize()
 
-    tide = TIDE()
-    tide.evaluate_range(gt, pred, mode=TIDE.BOX)
+    # tide = TIDE()
+    # tide.evaluate_range(gt, pred, mode=TIDE.BOX)
+    
 
-    tide.summarize()
+    # tide.summarize()
+
+    class_labels = {
+        0: 'light',
+        1: 'license plate'
+    }
+    def save_predictions_yolov8(model, image_dir, save_dir, detection_threshold=0.5, device='cuda'):
+        # Ensure the save directory exists
+        if not os.path.exists(save_dir):
+            os.makedirs(save_dir)
+
+        # Load YOLOv8 model
+        # Assume 'model' is a YOLOv8 object that has a method 'predict' which takes a directory path as input
+        
+        # Evaluate the model on the given image directory
+        results = model.predict(image_dir, conf=detection_threshold, device=device)
+        
+        # Assume 'results' is a list of predictions where each prediction contains:
+        # image path, boxes, scores, and labels
+        
+        for result in results:
+            image_path = result.path
+            boxes = result.boxes
+            scores = boxes.conf
+            labels = boxes.cls
+            
+            # Load image
+            image = cv2.imread(image_path)
+            for box, score, label in zip(boxes.xyxy, scores, labels):
+                x_min, y_min, x_max, y_max = map(int,box.data.cpu().numpy())
+                # Draw rectangle on the image
+                cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (220, 0, 0), 2)
+                
+                # Add label and score to the image
+                label_str = f'{class_labels[labels.item()]}: {score:.2f}'
+                cv2.putText(image, label_str, (x_min, y_min - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (220,0,0), 2)
+            
+            # Save image with predictions
+            basename = os.path.basename(image_path)
+            save_path = os.path.join(save_dir, f'predicted_{basename}')
+            cv2.imwrite(save_path, image)
+
+    # Call the function with YOLOv8 model, image directory, and path to save directory
+    save_predictions_yolov8(model, f'{test_path}/images', 'prediction')
+    shutil.make_archive('/kaggle/working/predictions', 'zip', '/kaggle/working/predictions')
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, help='Path to the data file', required=True)
