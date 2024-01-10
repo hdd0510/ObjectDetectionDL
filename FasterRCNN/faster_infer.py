@@ -14,7 +14,7 @@ from pycocotools.cocoeval import COCOeval
 import argparse
 
 
-def load_model(model_path):
+def load_model(model_checkpoint):
     model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
 
     num_classes = 3 # 2 class (license_plate, lights) + background
@@ -24,7 +24,7 @@ def load_model(model_path):
 
     # replace the pre-trained head with a new one
     model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
-    model.load_state_dict(torch.load(model_path))
+    model.load_state_dict(model_checkpoint)
     model.eval()
     return model
 
