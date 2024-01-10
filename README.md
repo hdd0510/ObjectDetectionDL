@@ -7,7 +7,7 @@ FasterRCNN
 
 [no augment, no pretrain](https://drive.google.com/file/d/1kOtNpmk9KySOAS2RQBF6pqIazIqQlK7Y/view?usp=sharing)
 
-[augment, no pretrain](https://drive.google.com/file/d/1J9d5tPYCE50iW6fE95erc7x9fU1Ol0qu/view?usp=sharing)
+[augment, no pretrain](https://drive.google.com/file/d/1dhw8vyGJe6Kp2GWNul4MaTrDxj2KaOzh/view?usp=sharing)
 
 YOLOv8:
 
