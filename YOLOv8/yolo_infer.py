@@ -225,7 +225,7 @@ def main(test_path, model_path, yaml_path):
             for box, score, label in zip(boxes.xyxy, scores, labels):
                 x_min, y_min, x_max, y_max = map(int,box.data.cpu().numpy())
                 # Draw rectangle on the image
-                cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (220, 0, 0), 2)
+                cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 0, 220), 2)
                 
                 # Add label and score to the image
                 label_str = f'{class_labels[label.item()]}: {score:.2f}'
