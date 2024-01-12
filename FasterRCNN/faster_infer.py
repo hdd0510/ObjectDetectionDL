@@ -56,6 +56,7 @@ def prediction(model, directory, device= ('cuda' if torch.cuda.is_available() el
                     ToTensorV2()
                     ])
         image_tensor = val_transform(image=image)['image']
+        image_tensor = image_tensor.to(device)
         with torch.no_grad():
             # Get the model output
             output = model(image_tensor.unsqueeze(0))
