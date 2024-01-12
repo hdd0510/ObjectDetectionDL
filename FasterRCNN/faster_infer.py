@@ -14,6 +14,8 @@ from pycocotools.cocoeval import COCOeval
 import argparse
 import cv2
 import numpy as np
+import albumentations as A
+from albumentations.pytorch import ToTensorV2
 
 
 def load_model(model_path):
@@ -49,7 +51,12 @@ def prediction(model, directory, device= ('cuda' if torch.cuda.is_available() el
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         
         # Convert the image to a tensor that the model can understand
-        image_tensor = torch.from_numpy(image / 255.0).float().permute(2, 0, 1).unsqueeze(0).to(device)
+        val_transform = A.Compose([
+                    A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+                    ToTensorV2()
+                    ], bbox_params=A.BboxParams(format='pascal_voc', label_fields=['labels'])
+                )
+        image_tensor = val_transform(image=image)['image']
         
         with torch.no_grad():
             # Get the model output
@@ -74,7 +81,7 @@ def prediction(model, directory, device= ('cuda' if torch.cuda.is_available() el
         for label, box, score in zip(labels, boxes, scores):
             result = {
                 'filename': image_file,
-                "image_id": i,
+                "image_id": i+1,
                 "category_id": int(label),  # Convert numpy int to Python int
                 "bbox": box.tolist(),  # Convert numpy array to list
                 "score": float(score)  # Convert numpy float to Python float
@@ -101,7 +108,7 @@ def create_coco_json(image_dir, gt_dir, category_id_mapping, img_width, img_heig
     annotation_id = 1
     for i, filename in enumerate(os.listdir(image_dir)):
         if filename.lower().endswith(('.jpg', '.jpeg', '.png')):
-            image_id = i
+            image_id = i+1
             # Add image information
             coco_format['images'].append({
                 'id': image_id,
