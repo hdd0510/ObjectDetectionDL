@@ -37,7 +37,7 @@ def prediction(model, directory, device= ('cuda' if torch.cuda.is_available() el
     model.to(device)
     
     # Loop over all files in the directory
-    for image_file in os.listdir(directory):
+    for i, image_file in enumerate(os.listdir(directory)):
         # Make sure to read only image files (you may need to adjust the extension list)
         if not image_file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp')):
             continue
@@ -73,7 +73,7 @@ def prediction(model, directory, device= ('cuda' if torch.cuda.is_available() el
         # Collect results
         for label, box, score in zip(labels, boxes, scores):
             result = {
-                "image_id": os.path.basename(image_path),
+                "image_id": i,
                 "category_id": int(label),  # Convert numpy int to Python int
                 "bbox": box.tolist(),  # Convert numpy array to list
                 "score": float(score)  # Convert numpy float to Python float
