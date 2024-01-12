@@ -12,6 +12,7 @@ import json
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
 import argparse
+import cv2
 
 
 def load_model(model_path):
