@@ -13,6 +13,7 @@ from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
 import argparse
 import cv2
+import numpy as np
 
 
 def load_model(model_path):
