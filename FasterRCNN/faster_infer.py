@@ -159,10 +159,6 @@ def main(model_path, data_path):
     with open('predictions.json', 'w') as f:
         json.dump(tide_predictions, f)
     
-
-    pred = datasets.COCOResult('/kaggle/working/predictions.json')
-    gt = datasets.COCO('/kaggle/working/ground_truths.json')
-    
     coco_gt = COCO('/kaggle/working/ground_truths.json')  # path to the JSON with ground truth annotations
     coco_dt = coco_gt.loadRes('/kaggle/working/predictions.json')  # path to the JSON with detection results
     coco_eval = COCOeval(coco_gt, coco_dt, 'bbox')
