@@ -3,11 +3,11 @@ FasterRCNN
 
 [no augment, pretrained](https://drive.google.com/file/d/19hjPt2kfnWabT4KInZ0qJMVP3gcuLpLZ/view?usp=sharing)
 
-[Augmented, pretrained](https://drive.google.com/file/d/12Weowf1JB1WaqhfvMSZu2SN4uBrKai8s/view?usp=sharing)
+[Augmented, pretrained](https://drive.usercontent.google.com/download?id=12Weowf1JB1WaqhfvMSZu2SN4uBrKai8s&export=download&confirm=t&uuid=98a355f0-306f-40ea-931d-2a903da8b528)
 
 [no augment, no pretrain](https://drive.google.com/file/d/1kOtNpmk9KySOAS2RQBF6pqIazIqQlK7Y/view?usp=sharing)
 
-[augment, no pretrain](https://drive.google.com/file/d/1dhw8vyGJe6Kp2GWNul4MaTrDxj2KaOzh/view?usp=sharing)
+[augment, no pretrain](https://drive.usercontent.google.com/download?id=1dhw8vyGJe6Kp2GWNul4MaTrDxj2KaOzh&export=download&authuser=0)
 
 YOLOv8:
 
