@@ -73,6 +73,7 @@ def prediction(model, directory, device= ('cuda' if torch.cuda.is_available() el
         # Collect results
         for label, box, score in zip(labels, boxes, scores):
             result = {
+                'filename': image_file,
                 "image_id": i,
                 "category_id": int(label),  # Convert numpy int to Python int
                 "bbox": box.tolist(),  # Convert numpy array to list
@@ -101,8 +102,6 @@ def create_coco_json(image_dir, gt_dir, category_id_mapping, img_width, img_heig
     for i, filename in enumerate(os.listdir(image_dir)):
         if filename.lower().endswith(('.jpg', '.jpeg', '.png')):
             image_id = i
-            image_path = os.path.join(image_dir, filename)
-            
             # Add image information
             coco_format['images'].append({
                 'id': image_id,
