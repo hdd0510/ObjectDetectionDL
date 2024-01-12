@@ -55,9 +55,9 @@ def prediction(model, directory, device= ('cuda' if torch.cuda.is_available() el
             output = model(image_tensor)
         
         # Retrieve scores, labels, and boxes from the model's output
-        scores = output['scores'].data.cpu().numpy()
-        labels = output['labels'].data.cpu().numpy()
-        boxes = output['boxes'].data.cpu().numpy()
+        scores = output[0]['scores'].data.cpu().numpy()
+        labels = output[0]['labels'].data.cpu().numpy()
+        boxes = output[0]['boxes'].data.cpu().numpy()
 
         # Apply the detection threshold
         indices = scores >= detection_threshold
