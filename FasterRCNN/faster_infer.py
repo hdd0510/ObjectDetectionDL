@@ -14,7 +14,7 @@ from pycocotools.cocoeval import COCOeval
 import argparse
 
 
-def load_model(model_checkpoint):
+def load_model(model_path):
     model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
 
     num_classes = 3 # 2 class (license_plate, lights) + background
@@ -24,6 +24,7 @@ def load_model(model_checkpoint):
 
     # replace the pre-trained head with a new one
     model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
+    model_checkpoint = torch.load(model_path)
     model.load_state_dict(model_checkpoint)
     model.eval()
     return model
@@ -172,7 +173,7 @@ def main(model_path, data_path):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, help='Path to the data file', required=True)
-    parser.add_argument('--model_checkpoint', help='Path to the YOLOv8 model file', required=True)
+    parser.add_argument('--model_path', help='Path to the YOLOv8 model file', required=True)
     args = parser.parse_args()
 
-    main(args.model_checkpoint, args.data_path)
+    main(args.model_path, args.data_path)
