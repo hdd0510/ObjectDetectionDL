@@ -17,7 +17,7 @@ import numpy as np
 
 
 def load_model(model_path):
-    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
+    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(weights=True)
 
     num_classes = 3 # 2 class (license_plate, lights) + background
 
@@ -130,7 +130,7 @@ def create_coco_json(image_dir, gt_dir, category_id_mapping, img_width, img_heig
                         coco_format['annotations'].append({
                             'id': annotation_id,
                             'image_id': image_id,
-                            'category_id': int(class_id),
+                            'category_id': int(class_id)+1,
                             'bbox': [x_min, y_min, width, height],
                             'area': width * height,
                             'iscrowd': 0,
