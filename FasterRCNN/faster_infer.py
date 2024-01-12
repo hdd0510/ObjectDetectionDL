@@ -147,7 +147,7 @@ def main(model_path, data_path):
     tide_predictions = prediction(model, image_dir)
 
     # Initialize the JSON structure
-    category_id_mapping = {'license plate': 1, 'lights': 0}
+    category_id_mapping = {'license plate': 2, 'lights': 1}
     img_width = 640
     img_height = 640
 
