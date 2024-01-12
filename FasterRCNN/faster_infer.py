@@ -56,10 +56,9 @@ def prediction(model, directory, device= ('cuda' if torch.cuda.is_available() el
                     ToTensorV2()
                     ])
         image_tensor = val_transform(image=image)['image']
-        
         with torch.no_grad():
             # Get the model output
-            output = model(image_tensor)
+            output = model(image_tensor.unsqueeze(0))
         
         # Retrieve scores, labels, and boxes from the model's output
         scores = output[0]['scores'].data.cpu().numpy()
